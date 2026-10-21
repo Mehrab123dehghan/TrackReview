@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  color: #f1eef5;
+  background: #111014;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  --bg: #111014;
+  --panel: #19171e;
+  --panel-soft: #201d27;
+  --text: #f1eef5;
+  --muted: #aaa4b2;
+  --subtle: #716b79;
+  --line: rgba(237, 229, 247, .12);
+  --purple: #b68aff;
+  --purple-bright: #c29cff;
+  --green: #9cd9ad;
+  --sans: 'Vazirmatn', Tahoma, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; scroll-behavior: smooth; }
+body { min-width: 320px; margin: 0; }
+body, button, input, textarea, select { font-family: var(--sans); }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font-size: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--purple-bright); outline-offset: 3px; }
+::selection { color: #17121e; background: #c6a6ff; }
+
