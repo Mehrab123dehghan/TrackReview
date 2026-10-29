@@ -12,3 +12,4 @@ export default function ReviewerCard({ reviewer, categoryLabel, selected, onSele
     </article>
   )
 }
+

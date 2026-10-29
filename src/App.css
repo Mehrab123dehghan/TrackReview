@@ -183,3 +183,4 @@ h1, h2, p { margin: 0; }
   .audience-grid { grid-template-columns: 1fr; }.alternative-grid { grid-template-columns: 1fr 1fr; }.alternative-grid article { min-height: 0; }
   .business-next { align-items: flex-start; flex-direction: column; }.classification-inner { padding-block: 28px; }
 }
+
