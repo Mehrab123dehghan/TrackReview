@@ -16,6 +16,7 @@ export default function SavedRequests({ requests }) {
       <div className="saved-card-heading"><div><span className="saved-badge">ثبت‌شده در این مرورگر</span><h3>{request.track}</h3></div><time>{formatDate(request.createdAt)}</time></div>
       <div className="saved-meta"><span>هنرمند: {request.artist}</span><span>موضوع: {category}</span><span>متخصص: {request.reviewerName ?? 'انتخاب نشده'}</span></div>
       <p className="saved-details">{request.details}</p>
+      {request.audioUrl && <div className="saved-audio"><strong>فایل دمو: {request.audioName}</strong><audio controls preload="metadata" src={request.audioUrl}>پخش صوت در این مرورگر پشتیبانی نمی‌شود.</audio><small>فایل انتخاب‌شده در طول همین نشست مرورگر قابل پخش است.</small></div>}
       <div className="saved-credit">هزینهٔ نمایشی: {request.credits ? `${request.credits} اعتبار دمو` : 'بدون اعتبار؛ پرداختی انجام نشده'}</div>
     </article>
   })}</div>

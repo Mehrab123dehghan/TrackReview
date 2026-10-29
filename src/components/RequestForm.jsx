@@ -17,6 +17,8 @@ export default function RequestForm({ reviewer, onSaved }) {
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
   const [saveError, setSaveError] = useState('')
+  const [audio, setAudio] = useState(null)
+  const [audioError, setAudioError] = useState('')
 
   function change(field, value) {
     setValues((current) => ({ ...current, [field]: value }))
@@ -29,6 +31,8 @@ export default function RequestForm({ reviewer, onSaved }) {
     const nextErrors = validate(values)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
+    if (!audio) { setAudioError('برای شنیدن متخصص، یک فایل صوتی انتخاب کن.'); return }
+    if (audio.size > 8 * 1024 * 1024) { setAudioError('حجم فایل برای دمو نباید بیشتر از ۸ مگابایت باشد.'); return }
 
     const request = {
       id: globalThis.crypto?.randomUUID?.() ?? `demo-${Date.now()}`,
@@ -40,12 +44,15 @@ export default function RequestForm({ reviewer, onSaved }) {
       reviewerName: reviewer?.name ?? null,
       credits: reviewer?.credits ?? 0,
       createdAt: new Date().toISOString(),
+      audioName: audio.name,
+      audioUrl: URL.createObjectURL(audio),
     }
     if (!saveRequest(request)) {
       setSaveError('ذخیره در این مرورگر ممکن نشد. فضای مرورگر یا تنظیمات ذخیره‌سازی را بررسی کن و دوباره بفرست.')
       return
     }
     setValues(initialValues)
+    setAudio(null)
     setErrors({})
     onSaved(request)
   }
@@ -59,8 +66,9 @@ export default function RequestForm({ reviewer, onSaved }) {
         <label className="field"><span>نام ترک <b>*</b></span><input value={values.track} onChange={(event) => change('track', event.target.value)} placeholder="نام نسخهٔ دمو یا ترک" aria-invalid={Boolean(errors.track)} aria-describedby={errors.track ? 'track-error' : undefined} />{errors.track && <small id="track-error" className="field-error">{errors.track}</small>}</label>
         <label className="field"><span>دستهٔ بازخورد <b>*</b></span><select value={values.category} onChange={(event) => change('category', event.target.value)} aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? 'category-error' : undefined}><option value="">انتخاب کن</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.label}</option>)}</select>{errors.category && <small id="category-error" className="field-error">{errors.category}</small>}</label>
         <label className="field field-wide"><span>دقیقاً دوست داری چه چیزی بررسی شود؟ <b>*</b></span><textarea value={values.details} onChange={(event) => change('details', event.target.value)} rows="4" placeholder="مثلاً: در کورس، رابطهٔ کیک و بیس را بررسی کن و بگو کدام بخش‌های تنظیم باعث شلوغی شده‌اند." aria-invalid={Boolean(errors.details)} aria-describedby={errors.details ? 'details-error' : undefined} />{errors.details && <small id="details-error" className="field-error">{errors.details}</small>}</label>
+        <label className="field field-wide"><span>فایل موسیقی <b>*</b></span><input type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/aac,audio/ogg,audio/flac,.mp3,.wav,.m4a,.aac,.ogg,.flac" onChange={(event) => { const file = event.target.files?.[0] ?? null; setAudio(file); setAudioError(file && file.size > 8 * 1024 * 1024 ? 'حجم فایل نباید بیشتر از ۸ مگابایت باشد.' : '') }} />{audio && <small>{audio.name} · {(audio.size / 1024 / 1024).toFixed(1)} مگابایت</small>}{audioError && <small className="field-error">{audioError}</small>}</label>
       </div>
-      <div className="form-bottom"><p>اعتبار و تحویل در این نمونه فقط نمایشی است؛ این فرم پرداخت یا بارگذاری فایل ندارد.</p><button className="button button-primary submit-request" type="submit">ثبت درخواست نمایشی <span aria-hidden="true">←</span></button></div>
+      <div className="form-bottom"><p>فایل برای دمو فقط در همین صفحه قابل شنیدن است؛ انتقال آنلاین به متخصص فعال نیست. سقف فایل ۸ مگابایت.</p><button className="button button-primary submit-request" type="submit">ثبت درخواست نمایشی <span aria-hidden="true">←</span></button></div>
       {saveError && <p className="storage-error" role="alert">{saveError}</p>}
     </form>
   )
